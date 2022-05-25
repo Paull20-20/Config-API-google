@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+</head>
+<body>
+
+        <button onclick="login()">Logar com google</button>
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+
+    
+    <script>
+        //aula: https://www.youtube.com/watch?v=8gM_gzl5l0E
+
+        // Import the functions you need from the SDKs you need
+         //import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCRNkyqbj0mv21Hq2t2BzxfLB_YYRRr-Rs",
+          authDomain: "todo-85b50.firebaseapp.com",
+          projectId: "todo-85b50",
+          storageBucket: "todo-85b50.appspot.com",
+          messagingSenderId: "988895909515",
+          appId: "1:988895909515:web:fa39ff413db68c8a1c668e"
+        };
+      
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+        function login() {
+            firebase
+            .auth()
+            .signInWithPopup(provider)
+            .then(function (result) {
+                // ESTE NÃO É O JWT, É O TOKEN PARA OBTER INFOS DO GOOGLE
+                var token = result.credential.accessToken;
+                var user = result.user;
+                firebase.auth()
+                    .currentUser
+                    .getIdToken()
+                    .then((idToken) => {
+                        // ESTE É O TOKEN JWT QUE VAMOS MANDAR PARA API
+                        console.log(idToken);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+            }).catch(function (error) {
+                // DEU RUIM
+                console.log(error);
+            })
+        }
+
+        
+      </script>
+    
+</body>
+</html>
+
+
+
+
